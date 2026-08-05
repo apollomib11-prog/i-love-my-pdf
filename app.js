@@ -495,7 +495,15 @@ function updateSharesCount() {
 }
 
 // ---------- Affichage ----------
+// Termine l'écran de démarrage : rend le contenu visible une fois la vue choisie.
+function unlockUI() {
+  document.body.classList.remove('auth-pending');
+  const bs = document.getElementById('bootScreen');
+  if (bs) bs.hidden = true;
+}
+
 function showLogin(message) {
+  unlockUI();
   loginOverlay.hidden = false;
   deniedOverlay.hidden = true;
   document.body.classList.remove('guest');
@@ -508,6 +516,7 @@ function showLogin(message) {
 
 // Page d'explication dédiée (lien révoqué, expiré ou invalide) : PAS le login.
 function showDenied(title, text) {
+  unlockUI();
   deniedTitle.textContent = title;
   deniedText.textContent = text;
   loginOverlay.hidden = true;
@@ -521,6 +530,7 @@ function showDenied(title, text) {
 // Pas de bouton de retour : la page « Accès révoqué » reste affichée, sans redirection.
 
 function showApp(role, exp, name) {
+  unlockUI();
   loginOverlay.hidden = true;
   // Thème bleu pour l'interface invité (accès temporaire)
   document.body.classList.toggle('guest', role !== 'admin');

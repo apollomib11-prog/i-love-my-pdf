@@ -9,7 +9,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="auth-pending">
+
+<!-- Écran de démarrage : masque le login pendant l'initialisation de la session -->
+<div class="boot-screen" id="bootScreen" aria-hidden="true">
+  <div class="boot-spinner"></div>
+</div>
 
 <!-- ================= CONNEXION ================= -->
 <div class="login-overlay" id="loginOverlay">
