@@ -1,0 +1,9 @@
+{
+  "name": "i-love-m",
+  "version": "2.3.0",
+  "private": true,
+  "description": "I Love M — séparateur de PDF (site Netlify + fonction de révocation d'accès)",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

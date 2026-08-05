@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Love My PDF — Séparateur de PDF</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23121014'/%3E%3Ctext x='50' y='70' font-size='56' text-anchor='middle' fill='%23ff4d94' font-family='Arial' font-weight='bold'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ================= CONNEXION ================= -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-card">
+    <h1 class="login-title">I Love My <span class="pdf-blue">PDF</span></h1>
+    <p class="login-sub">Espace sécurisé — identifiez-vous pour continuer.</p>
+    <form id="loginForm" class="login-form">
+      <label class="field">
+        <span>Mot de passe</span>
+        <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+      </label>
+      <p class="login-msg" id="loginMsg"></p>
+      <button type="submit" class="btn btn-primary login-btn">Se connecter</button>
+    </form>
+    <p class="login-note">Accès réservé au chargé de clientèle transit.</p>
+  </div>
+</div>
+
+<!-- ================= PAGE ACCÈS REFUSÉ (révoqué / expiré) ================= -->
+<div class="denied-overlay" id="deniedOverlay" hidden>
+  <div class="denied-card">
+    <div class="denied-badge">!</div>
+    <h1 class="denied-title" id="deniedTitle">Accès révoqué</h1>
+    <p class="denied-text" id="deniedText">Ce lien d'accès a été annulé par l'administratrice.</p>
+    <p class="denied-sub">Contacte Melissa pour obtenir un nouvel accès.</p>
+  </div>
+</div>
+
+<!-- ================= HEADER ================= -->
+<header class="header">
+  <div class="container header-inner">
+    <div class="logo">
+      <span class="logo-text">I Love My <span class="pdf-blue">PDF</span></span>
+    </div>
+    <nav class="nav">
+      <a href="#" class="nav-link active" data-slide="0">Accueil</a>
+      <a href="#" class="nav-link" id="navGuide" data-slide="1">Guide</a>
+      <a href="#" class="nav-link" data-slide="2">Application</a>
+      <a href="#" class="nav-link" id="navShare" data-slide="3" hidden>Partage à un Collègue</a>
+      <span class="session-chip" id="sessionChip" hidden></span>
+      <a href="#" class="logout-link" id="btnLogout" hidden>Se déconnecter</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= BANNIÈRE INVITÉ ================= -->
+<div class="guest-banner" id="guestBanner" hidden>
+  <div class="container"><span id="guestBannerText"></span></div>
+</div>
+
+<!-- ================= SLIDER : navigation horizontale plein écran ================= -->
+<div class="site-slider" id="siteSlider">
+
+  <!-- PAGE 1 : ACCUEIL -->
+  <section class="slide" id="slide-home">
+    <div class="slide-inner">
+    <div class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-animation" id="heroAnimation" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <div class="hero-badge">Nouveau — 100% en ligne, gratuit</div>
+        <h1>Divisez vos PDF assemblés<br><span class="gradient">en un clic.</span></h1>
+        <p class="hero-sub">Un dossier client reçu en un seul PDF ? I Love My PDF le lit, identifie chaque document
+          (facture, packing list, BL, certificat…), les sépare, les nomme et les classe par client —
+          automatiquement, en quelques secondes.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn btn-primary" data-slide="2">Essayer l'application</a>
+          <a href="#" class="btn btn-ghost" id="btnGoGuide">Voir le guide</a>
+        </div>
+        <div class="hero-features">
+          <div class="feature">PDF scannés lus par OCR</div>
+          <div class="feature">Nommage automatique</div>
+          <div class="feature">Classement par client</div>
+          <div class="feature">Vos fichiers restent sur votre appareil</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div class="footer-logo">I Love My <span class="pdf-blue">PDF</span></div>
+        <p>Outil de séparation de PDF pour chargés de clientèle en transit. Fait avec soin.</p>
+      </div>
+    </footer>
+    </div>
+  </section>
+
+  <!-- PAGE 2 : GUIDE D'UTILISATION -->
+  <section class="slide" id="slide-guide">
+    <div class="slide-inner">
+    <div class="guide-section">
+      <div class="container">
+        <h2 class="section-title">Guide d'utilisation</h2>
+        <p class="section-sub">Tout ce qu'il faut savoir pour travailler efficacement.</p>
+        <div class="guide-grid">
+          <div class="guide-card">
+            <h4>Comment sont nommés les fichiers ?</h4>
+            <p>Format : <code>AAAAMMJJ_CLIENT_TYPE_REFERENCE.pdf</code></p>
+            <p>Exemple : <code>20260804_DUPONT_FACTURE_BL123.pdf</code></p>
+            <p>Référence absente → <code>sans_ref</code> · Client inconnu → <code>CLIENT_INCONNU</code></p>
+          </div>
+          <div class="guide-card">
+            <h4>Comment sont-ils classés ?</h4>
+            <p>Le ZIP contient un dossier par client, avec des sous-dossiers de type :</p>
+            <pre>DUPONT/
+ ├── 1_Factures/
+ ├── 2_Packing_Lists/
+ ├── 3_Connaissements/
+ ├── 4_Certificats/
+ └── 5_Autres/</pre>
+          </div>
+          <div class="guide-card">
+            <h4>Et les PDFs scannés ?</h4>
+            <p>L'option OCR est activée par défaut. Les pages sans texte sont lues par un moteur OCR
+               en français (premier usage : téléchargement du module ~10 Mo). Les scans sont donc
+               découpés et classés comme les PDFs texte.</p>
+          </div>
+          <div class="guide-card">
+            <h4>Confidentialité</h4>
+            <p>Tout se passe dans votre navigateur : vos documents ne sont jamais envoyés sur un
+               serveur. Vous pouvez travailler même hors connexion après le premier chargement.</p>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <section class="faq-section" id="faq">
+          <h2 class="section-title">Questions fréquentes</h2>
+          <div class="faq-list">
+            <details>
+              <summary>Puis-je traiter plusieurs PDFs à la fois ?</summary>
+              <p>Actuellement l'application traite un PDF assemblé à la fois. Vous pouvez répéter l'opération
+                 autant de fois que nécessaire.</p>
+            </details>
+            <details>
+              <summary>Pourquoi un document n'est-il pas détecté ?</summary>
+              <p>La détection repose sur les mots-clés en tête de page (FACTURE, INVOICE, PACKING LIST,
+                 BILL OF LADING, CERTIFICAT D'ORIGINE…). Si le titre est absent ou illisible, le document
+                 est fusionné avec le précédent ou classé en « AUTRE ».</p>
+            </details>
+            <details>
+              <summary>Mes fichiers originaux sont-ils modifiés ?</summary>
+              <p>Jamais. L'application travaille sur une copie en mémoire. Rien n'est supprimé ni modifié.</p>
+            </details>
+            <details>
+              <summary>Le site fonctionne-t-il sans connexion ?</summary>
+              <p>Après le premier chargement (bibliothèques + module OCR), l'essentiel fonctionne hors
+                 connexion puisque tout est traité dans votre navigateur.</p>
+            </details>
+            <details>
+              <summary>Comment donner accès à un collègue ?</summary>
+              <p>Le compte principal (Identifiant <code>I Love My PDF</code>) peut générer un lien d'accès
+                 temporaire depuis la page « Partage à un Collègue » : choisissez la durée (2 heures à 7 jours),
+                 le lien expire automatiquement et ne fonctionne plus ensuite.</p>
+            </details>
+          </div>
+        </section>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- PAGE 3 : APPLICATION -->
+  <section class="slide" id="slide-app">
+    <div class="slide-inner">
+    <div class="app-section">
+      <div class="container">
+        <h2 class="section-title">L'application</h2>
+        <p class="section-sub">3 étapes : déposer le PDF, vérifier la détection, télécharger les fichiers séparés.</p>
+
+        <!-- Étapes -->
+        <div class="steps" id="steps">
+          <h3 class="steps-title">Comment ça marche</h3>
+          <div class="steps-track" id="stepsTrack">
+            <div class="step-panel">
+              <div class="step-num">1</div>
+              <h4>Déposez le PDF assemblé</h4>
+              <p>Glissez-déposez le fichier reçu par e-mail (ou cliquez pour le choisir). Un PDF assemblé contient plusieurs documents clients dans un seul fichier.</p>
+            </div>
+            <div class="step-panel">
+              <div class="step-num">2</div>
+              <h4>Vérifiez la détection</h4>
+              <p>Le programme lit chaque page et identifie les documents : factures, packing lists, connaissements (BL), certificats d'origine. Vérifiez le tableau avant de continuer.</p>
+            </div>
+            <div class="step-panel">
+              <div class="step-num">3</div>
+              <h4>Téléchargez le dossier classé</h4>
+              <p>Cliquez sur « Séparer et nommer » : vous téléchargez un dossier ZIP contenant chaque document séparé, nommé automatiquement et classé par client puis par type.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zone de dépôt -->
+        <div class="dropzone" id="dropzone">
+          <input type="file" id="fileInput" accept=".pdf" hidden>
+          <div class="dropzone-inner" id="dropzoneInner">
+            <p class="dropzone-title">Dépose ton PDF assemblé ici</p>
+            <p class="dropzone-sub">ou clique pour parcourir</p>
+          </div>
+        </div>
+
+        <!-- Info fichier -->
+        <div class="file-info" id="fileInfo" hidden>
+          <span class="file-name" id="fileName"></span>
+          <span class="file-meta" id="fileMeta"></span>
+        </div>
+
+        <!-- Options -->
+        <div class="options-bar">
+          <label class="switch-label">
+            <input type="checkbox" id="ocrToggle" checked>
+            <span class="switch"></span>
+            <span class="switch-text">OCR pour PDFs scannés <small>(français)</small></span>
+          </label>
+          <button class="btn btn-primary btn-sm" id="btnSeparate" disabled>Séparer et nommer</button>
+        </div>
+
+        <!-- Progression -->
+        <div class="progress-wrap" id="progressWrap" hidden>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          <p class="progress-text" id="progressText"></p>
+        </div>
+
+        <!-- Tableau -->
+        <div class="table-card" id="tableCard" hidden>
+          <table class="docs-table">
+            <thead>
+              <tr><th>N°</th><th>Client</th><th>Type</th><th>Référence</th><th>Pages</th><th>Statut</th></tr>
+            </thead>
+            <tbody id="docsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- PAGE 3 : PARTAGE INVITÉ -->
+  <section class="slide" id="slide-share" hidden>
+    <div class="slide-inner">
+    <div class="app-section">
+      <div class="container">
+        <h2 class="section-title">Partage à un Collègue</h2>
+        <p class="section-sub">Gérez les accès temporaires de vos collègues.</p>
+
+        <!-- Espace administrateur -->
+        <div class="admin-dash" id="adminDash">
+          <div class="admin-dash-head">
+            <h3>Espace administrateur</h3>
+            <p>Gérez les accès de vos collègues en quelques clics.</p>
+          </div>
+          <div class="admin-cards">
+            <div class="admin-card">
+              <div class="admin-card-badge">+</div>
+              <div class="admin-card-body">
+                <h4>Créer un accès temporaire</h4>
+                <p>Génère un lien expirant à envoyer à un collègue.</p>
+              </div>
+              <button class="btn btn-primary btn-sm" id="btnTempAccess">Créer un lien</button>
+            </div>
+            <div class="admin-card">
+              <div class="admin-card-badge">···</div>
+              <div class="admin-card-body">
+                <h4>Mes partages</h4>
+                <p>Liste les liens en cours et révoque un accès à tout moment.</p>
+              </div>
+              <button class="btn btn-ghost btn-sm" id="btnShares">Voir mes partages <span class="shares-pill" id="sharesCount" hidden>0</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ================= FLÈCHES DE NAVIGATION ================= -->
+<button class="slide-arrow slide-arrow-prev" id="btnSlidePrev" aria-label="Page précédente">‹</button>
+<button class="slide-arrow slide-arrow-next" id="btnSlideNext" aria-label="Page suivante">›</button>
+
+<!-- ================= MODAL ACCÈS TEMPORAIRE ================= -->
+<div class="modal-overlay" id="tempModal" hidden>
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3>Accès temporaire</h3>
+      <button class="modal-close" id="btnTempClose" aria-label="Fermer">×</button>
+    </div>
+    <div class="modal-body">
+      <label class="field">
+        <span>Nom du collègue <small>(optionnel)</small></span>
+        <input type="text" id="tempName" placeholder="Ex : Karim">
+      </label>
+      <label class="field">
+        <span>Durée de l'accès</span>
+        <select id="tempDuree">
+          <option value="2h">2 heures</option>
+          <option value="6h">6 heures</option>
+          <option value="12h">12 heures</option>
+          <option value="1j">1 jour</option>
+          <option value="2j" selected>2 jours</option>
+          <option value="3j">3 jours</option>
+          <option value="7j">7 jours</option>
+          <option value="custom">Personnalisée…</option>
+        </select>
+      </label>
+      <div class="field" id="tempCustomWrap" hidden>
+        <span>Expire le</span>
+        <input type="datetime-local" id="tempCustom">
+      </div>
+      <button class="btn btn-primary" id="btnTempGen">Générer le lien</button>
+      <div class="temp-result" id="tempResult" hidden>
+        <p class="temp-expiry" id="tempExpiry"></p>
+        <div class="temp-link-row">
+          <input type="text" id="tempLink" readonly>
+          <button class="btn btn-ghost btn-sm" id="btnTempCopy">Copier</button>
+        </div>
+        <div class="temp-share-row">
+          <a class="btn btn-whatsapp btn-sm" id="btnWhatsApp" href="#" target="_blank" rel="noopener">
+            <svg class="wa-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.26 8.26 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.23 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg>
+            Partager sur WhatsApp
+          </a>
+        </div>
+        <p class="temp-hint">Envoie ce lien à ton collègue : il pourra utiliser I Love My PDF jusqu'à l'expiration.</p>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL MES PARTAGES ================= -->
+<div class="modal-overlay" id="sharesModal" hidden>
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3>Mes partages</h3>
+      <button class="modal-close" id="btnSharesClose" aria-label="Fermer">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="shares-mode" id="sharesMode"></p>
+      <div id="sharesList"></div>
+      <p class="shares-empty" id="sharesEmpty">Aucun partage en cours.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SCRIPTS (CDN) ================= -->
+<!-- Attributs integrity (SRI) : protège contre un CDN compromis -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha384-weMABwrltA6jWR8DDe9Jp5blk+tZQh7ugpCsF3JwSA53WZM9/14PjS5LAJNHNjAI" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha384-+mbV2IY1Zk/X1p/nWllGySJSUN8uMs+gUAN10Or95UBH0fpj6GfKgPmgC5EXieXG" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js" integrity="sha384-GJqSu7vueQ9qN0E9yLPb3Wtpd7OrgK8KmYzC8T1IysG1bcvxvIO4qtYR/D3A991F" crossorigin="anonymous"></script>
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+</script>
+<script src="app.js"></script>
+</body>
+</html>
