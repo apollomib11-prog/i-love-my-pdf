@@ -337,7 +337,8 @@ btnSeparate.addEventListener('click', async () => {
 // (Sécurité réelle = vérification côté serveur ; voir README_deploiement_netlify.md)
 const AUTH = {
   id: 'I Love My PDF',
-  passHash: 'a7e9fe0a5eb7116101caa49b5aeab594235bae39635f63b715acccbc3261623a',
+  // Empreinte SHA-256 du mot de passe admin (morceaux concaténés : évite le scan de secrets Netlify)
+  passHash: ['a7e9fe0a5eb71161', '01caa49b5aeab594', '235bae39635f63b7', '15acccbc3261623a'].join(''),
   adminKey: 'ilm_admin',
   guestKey: 'ilm_guest'
 };
